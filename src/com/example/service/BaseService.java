@@ -28,6 +28,9 @@ public abstract class BaseService extends HttpServlet {
 
 	protected abstract HashMap<String,String> setReplaceMap(HttpServletRequest req);
 
+	protected abstract void doBusiness(HttpServletRequest req,HttpServletResponse resp);
+
+
 	private void writeFile(FileReader reader,PrintWriter writer,HashMap<String,String> replaceMap) throws IOException{
 		char[] buff = new char[1024];
 		int len = 0;
@@ -56,6 +59,7 @@ public abstract class BaseService extends HttpServlet {
 			reader = new FileReader(filePath);
 			HashMap<String,String> replaceMap = setReplaceMap(req);
 
+			doBusiness(req,resp);
 			writeFile(reader,writer,replaceMap);
 
 		} catch(FileNotFoundException e){
@@ -85,10 +89,10 @@ public abstract class BaseService extends HttpServlet {
 		try {
 			writer = resp.getWriter();
 			String htmlName = req.getParameter(HTML_PATH);
-			String filePath = "../html/" + htmlName + ".html";
+			String filePath = req.getContextPath() + "/html/" + htmlName + ".html";
 			reader = new FileReader(filePath);
 			HashMap<String,String> replaceMap = setReplaceMap(req);
-
+			doBusiness(req,resp);
 			writeFile(reader,writer,replaceMap);
 
 			if(htmlName == null || htmlName.trim().length() == 0){
