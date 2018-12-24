@@ -89,7 +89,7 @@ public abstract class BaseService extends HttpServlet {
 		try {
 			writer = resp.getWriter();
 			String htmlName = req.getParameter(HTML_PATH);
-			String filePath = req.getContextPath() + "/html/" + htmlName + ".html";
+			String filePath = req.getRealPath("") + "/html/" + htmlName + ".html";
 			reader = new FileReader(filePath);
 			HashMap<String,String> replaceMap = setReplaceMap(req);
 			doBusiness(req,resp);
