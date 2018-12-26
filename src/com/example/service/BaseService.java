@@ -21,6 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class BaseService extends HttpServlet {
 
 	public static final String HTML_PATH = "HTML_PATH";
+
+	public static final String ACTION = "ACTION";
+
+	public static final String ACTION_FACEIN = "FACEIN";
 	/**
 	 *
 	 */
@@ -53,13 +57,13 @@ public abstract class BaseService extends HttpServlet {
 		FileReader reader = null;
 
 		try {
-			writer = resp.getWriter();
-			String filePath = req.getRealPath("") + req.getServletPath().replace("/","\\");
 
+			doBusiness(req,resp);
+			writer = resp.getWriter();
+			String filePath = req.getRealPath("") + req.getServletPath();
 			reader = new FileReader(filePath);
 			HashMap<String,String> replaceMap = setReplaceMap(req);
 
-			doBusiness(req,resp);
 			writeFile(reader,writer,replaceMap);
 
 		} catch(FileNotFoundException e){
@@ -87,13 +91,17 @@ public abstract class BaseService extends HttpServlet {
 		PrintWriter writer = null;
 		FileReader reader = null;
 		try {
+
+			doBusiness(req,resp);
+
 			writer = resp.getWriter();
 			String htmlName = req.getParameter(HTML_PATH);
 			String filePath = req.getRealPath("") + "/html/" + htmlName + ".html";
-			reader = new FileReader(filePath);
-			HashMap<String,String> replaceMap = setReplaceMap(req);
-			doBusiness(req,resp);
-			writeFile(reader,writer,replaceMap);
+			if(htmlName != null && htmlName.trim().length() > 0){
+				reader = new FileReader(filePath);
+				HashMap<String,String> replaceMap = setReplaceMap(req);
+				writeFile(reader,writer,replaceMap);
+			}
 
 			if(htmlName == null || htmlName.trim().length() == 0){
 				resp.sendError(HttpServletResponse.SC_EXPECTATION_FAILED, "HTML_PATH Empty");
