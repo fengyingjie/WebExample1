@@ -1,6 +1,10 @@
 package com.example.service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -21,7 +25,7 @@ public class BaseSV extends BaseService {
 			while(ite.hasNext()){
 				String id = (String) ite.next();
 				String time = loginMap.get(id);
-				nameList.append(id + ":" + time);nameList.append("\r\n");
+				nameList.append("<tr><td>" + id + "</td><td>" + time + "</td></tr>");
 			}
 		}
 
@@ -41,9 +45,18 @@ public class BaseSV extends BaseService {
 			if(loginMap == null){
 				loginMap = new HashMap<String,String>();
 			}
-			if(!loginMap.containsKey(id)){
-				loginMap.put(id, loginTime);
-			}
+			Date dateTime = null;
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd/ HH:mm:ss");
+
+			dateTime = new Date(Long.valueOf(loginTime).longValue());
+			loginTime = formatter.format(dateTime);
+
+			loginMap.put(id, loginTime);
+//			if(!loginMap.containsKey(id)){
+//				loginMap.put(id, loginTime);
+//			}else{
+//				loginMap.put(id, loginTime);
+//			}
 			getServletContext().setAttribute("LOGIN_NAME",loginMap);
 		}
 	}

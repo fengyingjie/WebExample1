@@ -3,6 +3,7 @@
  */
 package com.example.service;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -60,7 +61,9 @@ public abstract class BaseService extends HttpServlet {
 
 			doBusiness(req,resp);
 			writer = resp.getWriter();
-			String filePath = req.getRealPath("") + req.getServletPath();
+
+			String base = req.getSession().getServletContext().getRealPath("");
+			String filePath = base + req.getServletPath().replaceFirst(req.getContextPath(), ""); //req.getRealPath("")
 			reader = new FileReader(filePath);
 			HashMap<String,String> replaceMap = setReplaceMap(req);
 

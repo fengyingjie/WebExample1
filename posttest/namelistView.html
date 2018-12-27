@@ -16,7 +16,7 @@ $(function(){
 });
 
 function getData(){
-	$.get("./html/nameTable",
+	$.get("http://47.94.142.3/example/html/nameTable",//"http://localhost:8080/example/html/nameTable",
 	function(result){
     	$("#nameDiv").html(result);
     });
@@ -24,11 +24,11 @@ function getData(){
 </script>
 </head>
 <body>
-
-<p>Test</p>
+	
+<p>测试</p>
 
 <div id="nameDiv">
-Nobody
+没有人
 <div>
 </body>
 </html>
